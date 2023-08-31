@@ -1,0 +1,1 @@
+baratok = ("Kovács Anna", "Péter", "Virág", "Viktor", "Klára", "Laci", "Ferenc")
