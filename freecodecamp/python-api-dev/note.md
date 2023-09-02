@@ -12,9 +12,15 @@ telepítés windowsra:
 virtual environments
 ha két különböző verzió számú projekt így tudunk 2 olyan projektet csinálni ami más verziószámot használ így mindkettőt tudjuk futtatni
 
-hogy csináljunk meg: py -m venv venv
+https://www.mingw-w64.org/
+https://learnpython.com/blog/python-requirements-file/
+
+hogy csináljunk meg: python -m venv venv
 .\venv\Scripts\python.exe
 ezt mindig be kell tallózni amikor a projekten dolgozunk
+
+can reinstall all of the needed packages with the command:
+pip install -r requirements.txt
 
 ./venv/Scripts/activate.bat
 
