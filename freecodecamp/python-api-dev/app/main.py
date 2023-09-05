@@ -79,6 +79,19 @@ def delete_post(id: int):
     return Response(status_code=status.HTTP_204_NO_CONTENT)
 
 
+# update post
+@app.put("/posts/{id}")
+def update_post(id: int, post: Post):
+    index = find_index_post(id)
+    if index == None:
+        raise Exception(status_code=status.HTTP_404_NOT_FOUND, detail=f"no post with this id: {id}")
+    
+    post_dict = post.dict()
+    post_dict['id'] = id
+    my_posts[index] = post_dict   
+    return {'data': post_dict}
+
+
 # dummy route
 # hibára fog futni mert először a másik route-ba fog belépni először az id fölé kell tenni
 

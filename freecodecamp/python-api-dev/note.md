@@ -23,6 +23,7 @@ can reinstall all of the needed packages with the command:
 pip install -r requirements.txt
 
 ./venv/Scripts/activate.bat
+source venv/Scripts/activate /bash
 
 https://fastapi.tiangolo.com/
 pip install fastapi[all]
@@ -99,10 +100,62 @@ importálni kell a fastapi-ból
  mindig amikor készítünk valamit mondjuk postot akkor az 201 kóddal lesz pl:
  @app.post("/posts", status_code=status.HTTP_201_CREATED)
 
- poszt törlése:
+poszt törlése:
 pop fügvénnyel ki tudjuk törölni a tömbből
 204 statust kell vissza adni
 le kell azt is kezelni amikor olyan id-t ad meg törlésre ami nem létezik
 egy egyszerű if-el le kezeljük hogy ha az index none akkor dobjon egy exceptiont ahogy előzőleg
 
-2:10
+update:
+put methódust használva updateljük a postot jelen esetben
+
+dokumentáció automatikus készítése fast apival
+http://localhost:8000/docs swagger ui
+http://localhost:8000/redoc redoc ezt is lehet haszálni 
+
+app folder kell csinálni egy __init__.py file-t
+uvicorn app.main:app --reload
+
+Database hozzáadása a projekthez:
+DBMS rendszert használjuk
+
+Ebben a projektben PostgreSQL-fogunk használni
+
+installáció:
+alapértelmezetten létre fog hozni egy db-t postgres néven
+https://www.enterprisedb.com/downloads/postgres-postgresql-downloads
+PORT alap 5432
+
+táblákkal fogounk dolgozni mint users products purchases
+ezek kapcsolatban fognak állni egymással
+
+ezen belül lesznek sorok és oszlopok
+
+adattípusok fontosak: int,decimal varchar,text boolean array
+Primary key-t kell definálni ami definiálja a hovatartozást csak egyet lehet használni
+unique használata
+null használata by default
+port 5433 ?
+
+PG ADMIN:
+Séma table
+id-t a serial tulajdonássgal fog automatikusan generálni
+F6 al el tudjuk menteni a kézzel felvitt adatokat
+timestamp készítése:
+timestamp with timezone default értéke NOW() lesz
+query tool jobb klikk az adatbázis nevére
+
+SELECT * from products; mindent kilistáz a products táblából
+F5el lehet frissiteni a kérések között
+nem számit a kis és nagybetű de jobb ha a sql parancsokat nagy betüvel írjuk
+
+rename colum:
+SELECT id as products_id FROM products; // as keyworddal lehet megtenni
+
+10es id kiválasztása: SELECT * FROM products WHERE id = 10;
+
+névre keresés: SELECT * FROM products WHERE name = 'Tv';
+
+operátorok haználata kisebb nagyobb jeleket kell csak hozzáadni név érték vagy lehet használni a != operátort
+
+3:25
