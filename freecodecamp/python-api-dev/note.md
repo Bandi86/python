@@ -150,7 +150,7 @@ F5el lehet frissiteni a kérések között
 nem számit a kis és nagybetű de jobb ha a sql parancsokat nagy betüvel írjuk
 
 rename colum:
-SELECT id as products_id FROM products; // as keyworddal lehet megtenni
+SELECT id AS products_id FROM products; // AS keyworddal lehet megtenni
 
 10es id kiválasztása: SELECT * FROM products WHERE id = 10;
 
@@ -158,4 +158,61 @@ névre keresés: SELECT * FROM products WHERE name = 'Tv';
 
 operátorok haználata kisebb nagyobb jeleket kell csak hozzáadni név érték vagy lehet használni a != operátort
 
-3:25
+AND kulcsszo hasznalataval kapcsolhatjuk ossze a lekerdezest
+IN operator pl:
+SELECT * FROM xy WHERE id IN (1,2,3)
+
+LIKE operator:
+SELECT * FROM xy WHERE xy name LIKE 'tv%'
+lehet kombinalni a NOT-al 
+
+orderezes:
+ORDER BY defaultban ASC 
+DESC nagytol kicsire
+recent products kerese: 
+ORDER BY created_at DESC
+
+LIMIT
+OFFSET
+
+uj letrehozasa INSERT INTO products (name, price, stock) VALUES ('tortila', 4, 1000), RETURNING *
+
+returninggel adjuk vissza a letrehozott itemet
+
+delete entries 
+
+DELETE FROM products WHERE id = 10 RETURNING *
+
+tobb elem torlese:
+
+DELETE FROM products WHERE stock = 0
+
+update:
+
+UPDATE products SET name = 'viragos tortila', price = 40 WHERE id = 25 RETURNING *
+
+tobb elem frissitese: 
+
+UPDATE products SET is_sale = true WHERE id = 15 RETURNING *
+
+psycopg postgre sql database adapter for python
+https://www.psycopg.org/docs/
+
+pip install pscyopg2
+pip install psycopg2-binary
+
+import psycopg2
+from psycopg2.extras import RealDictCursor
+
+ezutan try:
+conn = psycopg2.connect()
+parameterek:
+host, database, user, password, 
+cursor_factory=RealDictCursor
+
+cursor = conn.cursor()
+
+import time
+time.sleep(2) // 2 seckent ujra probalkozik a server inditassal
+
+4:10
