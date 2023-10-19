@@ -215,4 +215,44 @@ cursor = conn.cursor()
 import time
 time.sleep(2) // 2 seckent ujra probalkozik a server inditassal
 
-4:10
+ORM koztes program ami kommunikal az adatbazissal igy python koddal lehet megoldani nem kell sql parancsokat adni
+
+sqlalchemy python orm
+https://www.sqlalchemy.org/
+
+setup:
+pip install sqlalchemy
+
+from sqlalchemy import create_engine
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker
+
+pl:
+SQLALCHEMY_DATABASE_URL = 'postgresql://postgres:postgres@localhost:5432/fastapi'
+
+engine = create_engine(SQLALCHEMY_DATABASE_URL)
+
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+
+Base = declarative_base()
+
+tablak definialasa:
+models.py
+
+main fileba:
+from . import models
+from .db import engine, Base, get_db
+
+Base.metadata.create_all(bind=engine)
+
+db session:
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+
+igy mar minden szerver inditasnal letrejon a model alapjan a tabla
+
+5:08
