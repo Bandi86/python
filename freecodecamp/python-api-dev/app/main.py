@@ -6,14 +6,16 @@ from random import randrange
 import psycopg2
 from psycopg2.extras import RealDictCursor
 import time
-from . import models, schemas
-from app.db import engine, Base, get_db
+from models import Post
+from schemas import PostBase, PostCreate, Post
+from db import engine, Base, get_db
 from sqlalchemy.orm import Session
 
 #tablak letrehozasa
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
+
 
 while True:
     try:
@@ -56,24 +58,24 @@ def read_root():
 def get_posts(db: Session = Depends(get_db)):
    # cursor.execute(""" SELECT * FROM posts """)
    # posts = cursor.fetchall()
-    posts = db.query(models.Post).all()   
-    return {"data": posts}
+    posts = db.query(Post).all()   
+    return posts
 
 
 # CREATE POST
 
-@app.post("/posts", status_code=status.HTTP_201_CREATED)
-def create_posts(post: schemas.PostCreate, db: Session = Depends(get_db)):
+@app.post("/posts", status_code=status.HTTP_201_CREATED, response_model = Post)
+def create_posts(post: PostCreate, db: Session = Depends(get_db)):
    # new_post = cursor.execute("""INSERT INTO posts (title, content published) VALUES (%s %s %s) RETURNING * """,
    #                           (post.title, post.content, post.published))
    # new_post = cursor.fetchone()
    # conn.commit()
    
-    new_post = models.Post(**post.model_dump())
+    new_post = Post(**post.model_dump())
     db.add(new_post)
     db.commit()
     db.refresh(new_post)
-    return {"data": new_post}
+    return new_post
 
 # SINGLE POST
 
@@ -81,11 +83,11 @@ def create_posts(post: schemas.PostCreate, db: Session = Depends(get_db)):
 def get_posts(id: int, db: Session = Depends(get_db)):
     #cursor.execute(""" SELECT * FROM posts WHERE id = %s """, (str(id),))
     #post = cursor.fetchone()
-    post = db.query(models.Post).filter(models.Post.id == id).first()
+    post = db.query(Post).filter(Post.id == id).first()
     if post == None:
          raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                         detail=f"no post with this id: {id}")
-    return {"post_detail": post}
+    return post
 
 
 # DELETE POST
@@ -97,7 +99,7 @@ def delete_post(id: int, db: Session = Depends(get_db)):
     #deleted_post = cursor.fetchone()
     #conn.commit()
 
-    post = db.query(models.Post).filter(models.Post.id == id)
+    post = db.query(Post).filter(Post.id == id)
     
     if post.first() == None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
@@ -111,12 +113,12 @@ def delete_post(id: int, db: Session = Depends(get_db)):
 # UPDATE POST
 
 @app.put("/posts/{id}")
-def update_post(id: int, updated_post: schemas.PostCreate, db: Session = Depends(get_db)):
+def update_post(id: int, updated_post: PostCreate, db: Session = Depends(get_db)):
     #cursor.execute(""" UPDATE posts SET title = %s, content = %s, published = %s WHERE id = %s RETURNING * """,
     #               (post.title, post.content, post.published, str(id,)))
     #updated_post = cursor.fetchone()
     #conn.commit()
-    post_query = db.query(models.Post).filter(models.Post.id == id)
+    post_query = db.query(Post).filter(Post.id == id)
     post = post_query.first()
 
     if post == None:
@@ -127,7 +129,7 @@ def update_post(id: int, updated_post: schemas.PostCreate, db: Session = Depends
     post_query.update(updated_post.model_dump(), synchronize_session=False)
     db.commit()
     
-    return {'data': post_query.first()}
+    return post_query.first()
 
 
 # dummy route

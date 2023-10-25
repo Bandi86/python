@@ -257,4 +257,5 @@ igy mar minden szerver inditasnal letrejon a model alapjan a tabla
 
 kulon file-ban taroljuk el a pydentic semat hogy atlathatobb legyen
 
-5:39
+hiba a create postnal 
+5:45 
