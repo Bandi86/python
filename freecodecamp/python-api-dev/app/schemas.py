@@ -4,17 +4,16 @@ from datetime import datetime
 class PostBase(BaseModel):
     title: str
     content: str
-    published: bool = True  # optional field with true
+    published: bool = True
+
 
 class PostCreate(PostBase):
     pass
 
-class Post(BaseModel):
+class Post(PostBase):
     id: int
-    title: str
-    content: str
-    published: bool
     created_at: datetime
+   
 
     class Config:
-        orm_mode = True
+        from_attributes = True
