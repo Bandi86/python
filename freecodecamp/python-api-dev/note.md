@@ -57,6 +57,7 @@ Miért van szükséges Schémára?
 
 Pydantic használata:
 https://docs.pydantic.dev/latest/
+pip install -U pydantic
 ezzel fogjuk definiálni a sémát de nincs köze a fast apihoz
 
 from pydantic import BaseModel
